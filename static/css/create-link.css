@@ -1,0 +1,207 @@
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar, .container {
+    float: left;
+}
+
+.sidebar {
+    width: 100px;
+    height: 100%;
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: #1b262c;
+    color: white;
+    transition: 0.15s linear;
+}
+
+.sidebar ul {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 150px;
+    left: 34.15px;
+    list-style: none;
+}
+
+.sidebar li {
+    margin-top: 15px;
+    width: 150px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    font-family: Lato, sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.sidebar h2 {
+    color: white;
+    font-family: Catamaran, sans-serif;
+    font-weight: 700;
+    font-size: 33px;
+    padding-top: 20px;
+    margin: 10px;
+}
+
+.sidebar li:hover {
+    color: #3282b8;
+    opacity: 0.9;
+}
+
+.sidebar li:hover a {
+    color: #3282b8;
+}
+
+.sidebar li:nth-child(1) {
+    margin-top: 0;
+}
+
+.sidebar li i {
+    font-size: 30px;
+    vertical-align: middle;
+    width: 33.75px;
+}
+
+.sidebar ul li span {
+    display: none;
+    padding-left: 40px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: dotted;
+}
+
+.sidebar:hover {
+    width: 220px;
+}
+
+.sidebar:hover ul li span {
+    display: initial;
+}
+
+.sidebar:hover + .container {
+    width: calc(100% - 220px);
+}
+
+.container {
+    float: right;
+    width: calc(100% - 100px);
+    height: 100%;
+    transition: width 0.15s linear;
+    background-color: rgb(225, 232, 236);
+}
+
+.cred {
+    margin-top: 8vh;
+}
+
+.cred[id="first"]{
+    margin-top: 30vh;
+}
+
+form {
+    width: 50%;
+    margin: auto;
+}
+
+.cred input[type="password"], input[type="email"], input[type="text"] {
+    font-family: Lato, sans-serif;
+    color: black;
+    position: absolute;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: black solid 3px;
+    font-size: 1.7rem;
+    outline: none;
+    z-index: 1;
+    width: 50%;
+    margin: auto;
+}
+
+#percent-text {
+    font-family: Lato, sans-serif;
+    font-size: 1rem;
+    vertical-align: middle;
+    color: #3282b8;
+}
+
+#percent-label {
+    font-family: Lato, sans-serif;
+    font-size: 1.2rem;
+}
+
+.cred label {
+    font-family: Lato, sans-serif;
+    position: absolute;
+    border: none;
+    transition: 0.5s;
+    font-size: 1.7rem;
+    padding-top: 2px;
+}
+
+.cred input[type="text"]:not(:placeholder-shown) {
+    border-bottom: #000000 solid 3px;
+}
+
+.cred input[type="text"]:not(:placeholder-shown) + label {
+    transform: translateY(-25px);
+    font-size: 1rem;
+    color: #0985a5;
+}
+
+input[type="submit"] {
+    height: 50px;
+    width: 110px;
+    background-color: #335eea;
+    color: white;
+    font-family: Catamaran;
+    border-radius: 0.5rem;
+    font-size: 1.0rem;
+    border: solid #335eea;
+    cursor: pointer;
+    outline: 0;
+}
+
+input[type="submit"]:hover {
+    color: #335eea;
+    background-color: transparent;
+}
+
+.navbar {
+    width: 100%;
+    height: 45px;
+    background-color: rgb(27, 38, 44);
+    display: block;
+    position: fixed;
+    bottom: 0%;
+}
+
+.navbar ul li {
+    display: inline;
+    padding-right: 14%;
+}
+
+.navbar ul li i {
+    font-size: 17px;
+    color: white;
+}
+
+.alert-danger {
+    width: 80%;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: solid #f5c6cb;
+    text-align: center;
+    font-family: Lato, sans-serif;
+    padding: .75rem 1.25rem;
+    border-radius: .25rem;
+}

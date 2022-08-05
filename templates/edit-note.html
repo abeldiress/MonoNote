@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ note['title'].replace('Summary', '') }}</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+
+    <!-- Cool fonts from Google -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Font Awesome Js -->
+    <script src="https://kit.fontawesome.com/1216aee205.js" crossorigin="anonymous"></script>
+    
+    <link type="text/css" href="{{ url_for('static', filename='css/edit-note.css') }}" rel="stylesheet">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        onload = function() {
+            document.getElementsByClassName('sidebar')[0].style.height = document.getElementsByClassName('full-note')[0].clientHeight + 50 + 'px'
+            document.getElementById('save').onclick = function() {
+                for(i = 0; i < parseInt("{{ length }}"); i++) {
+                    try {
+                        if (document.getElementById(i.toString()).tagName == "IMG") {
+                            document.getElementsByName(i.toString() + '-edit')[0].value = 'Image%%:' + document.getElementById(i.toString()).dataset.src;
+                        } else {
+                            if (document.getElementById(i.toString()).tagName == "H3") {
+                                document.getElementsByName(i.toString() + '-edit')[0].value = 'Title: ' + document.getElementById(i.toString()).innerHTML;
+                            } else {
+                                document.getElementsByName(i.toString() + '-edit')[0].value = document.getElementById(i.toString()).innerHTML;
+                            }
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+                document.getElementsByTagName('form')[0].submit();
+            }
+
+
+            document.getElementById('download').onclick = function() {
+                console.log("click")
+                document.getElementsByClassName('modal')[0].style.display = "block";
+            }
+            
+            // 1st modal
+            window.onclick = function(event) {
+                if (event.target == document.getElementsByClassName('modal')[0]) {
+                    document.getElementsByClassName('modal')[0].style.display = "none";
+                }
+            }
+
+            if (screen.width <= 699) {
+                document.getElementsByClassName('sidebar')[0].style.display = 'none';
+                document.getElementsByClassName('container')[0].style.width = '100%';
+                document.getElementsByClassName('page')[0].style.width = '100%';
+            }
+
+            document.getElementsByClassName('close')[0].onclick = function() {
+                document.getElementsByClassName('modal')[0].style.display = "none";
+            }
+
+            // 2nd modal
+            window.onclick = function(event) {
+                if (event.target == document.getElementsByClassName('modal')[1]) {
+                    document.getElementsByClassName('modal')[1].style.display = "none";
+                }
+            }
+
+            document.getElementsByClassName('close')[1].onclick = function() {
+                document.getElementsByClassName('modal')[1].style.display = "none";
+            }
+
+            // 3rd modal
+            window.onclick = function(event) {
+                if (event.target == document.getElementsByClassName('modal')[2]) {
+                    document.getElementsByClassName('modal')[2].style.display = "none";
+                }
+            }
+
+            {% if save %}
+                t = 0;
+                setInterval(function() {
+                    t += 5;
+                    if (t < 120) {
+                        document.getElementsByClassName('alert-good')[0].innerHTML = 'Note recently saved ' + t.toString() + ' seconds ago.';
+                    } else if (t >= 120) {
+                        document.getElementsByClassName('alert-good')[0].innerHTML = 'Note recently saved a few minutes ago.';
+                    } else if (t > 220) {
+                        document.getElementsByClassName('alert-good')[0].style.display = 'none';
+                    }
+                }, 5000);
+            {% endif %}
+
+            document.getElementsByClassName('close')[2].onclick = function() {
+                document.getElementsByClassName('modal')[2].style.display = "none";
+            }
+
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 align="center">Editor</h2>
+        <ul>
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-backspace"></i><span>Notes</span></a></li>
+            {% if no_export %}<li id="download"><a href="#"><i class="fas fa-download"></i><span>Export</span></a></li>{% endif %}
+            <li id="save"><a><i class="fas fa-hdd"></i><span>Save</span></a></li>
+            <li onclick="document.getElementsByClassName('modal')[1].style.display = 'block'"><a><i class="fas fa-share-alt"></i><span>Share</span></a></li>
+            <li><a href="{{ url_for('deleteNote', noteId=noteId) }}"><i class="fas fa-trash-alt"></i><span>Delete</span></a></li>
+        </ul>
+    </div>
+    
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close" style="float: right;">&times;</span>
+            <h2 style="font-family: Lato, sans-serif; margin-top: 0; margin-bottom: 7%;">Download as...</h2>
+            <ul>
+                <a href="{{ url_for('downloadPDF', noteId=noteId) }}">
+                    <li class="format" id="pdf">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>PDF</span>
+                    </li>
+                </a>
+                <a href="{{ url_for('downloadDoc', noteId=noteId) }}">
+                    <li class="format" id="word">
+                        <i class="fas fa-file-word"></i>
+                        <span>Word Doc</span>
+                    </li>
+                </a>
+                <a href="{{ url_for('downloadHTML', noteId=noteId) }}">
+                    <li class="format" id="html">
+                        <i class="fab fa-html5"></i>
+                        <span>HTML</span>
+                    </li>
+                </a>
+                <a href="{{ url_for('downloadText', noteId=noteId) }}">
+                    <li class="format" id="plain-text" style="margin-right: 0;">
+                        <i class="fas fa-align-justify"></i>
+                        <span>Plain Text</span>
+                    </li>
+                </a>
+            </ul>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modal-content">
+            <span class="close" style="float: right;">&times;</span>
+            <h2 style="font-family: Lato, sans-serif; margin-top: 0; margin-bottom: 7%;">Share Publicly</h2>
+            <p style="font-family: Catamaran, sans-serif; margin-top: 0; margin-bottom: 7%;">
+                By clicking the Share button below, a link will be made that allows anybody with a MonoNote account to access it. This is not reversible.
+            </p>
+            <a href="{{ url_for('shareNote', noteId=noteId) }}">
+                <button id="modal-btn" class="btn">
+                    <span style="font-family: Lato, sans-serif; font-weight: 400;">Share</span>
+                </button>
+            </a>
+        </div>
+    </div>
+    {% if content %}
+        <div class="modal" style="display: block;">
+            <div class="modal-content">
+                <span class="close" style="float: right;">&times;</span>
+                <h2 style="font-family: Lato, sans-serif; margin-top: 0; margin-bottom: 7%;">Shared!</h2>
+                <a href="{{ content }}"><input type="text" onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';" style="font-family: Catamaran; font-size: 27px; border: none; color: cornflowerblue; outline: 0;" contenteditable="false" value="https://mononote.ca{{ content }}"></a>
+                <p style="font-family: Catamaran, sans-serif; margin-top: 0; margin-bottom: 7%;">
+                    The link above will take you to a link of your note to share with your friends. Enjoy.
+                </p>
+                <a onclick="copyLink();">
+                    <button id="modal-btn" class="btn">
+                        <span style="font-family: Lato, sans-serif; font-weight: 400;">Continue and Copy Link</span>
+                    </button>
+                </a>
+            </div>
+        </div>
+    {% endif %}
+    <script>
+        function copyLink() {
+            var copyText = document.getElementById('share-link');
+            document.getElementsByClassName('modal')[2].style.display = 'none';
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999)
+            document.execCommand('copy');
+        }
+    </script>
+    <div class="container">
+        <div class="page">
+            <div class="full-note" contentEditable="true">
+                <form method="POST">
+                    <h1 contentEditable="false">{{ note['title'] }}</h1>
+                    <h4 contentEditable="false">Made on {{ note['date_created'] }}</h4>
+                    {% if 'htt' in note['source'][0:3] %}
+                        <h4 contentEditable="false" style="color: black;">Source: <a href="{{ note['source'] }}" target="_blank">{{ note['source'] }}</a></h4>
+                    {% else %}
+                        <h4 contentEditable="false" style="color: black;">Source: {{ note['source'].replace(note['source'][25:l - 1], '...') }}</h4>
+                    {% endif %}
+                    <hr contentEditable="false" style="margin-top: 15px;">
+                    {% if save %}
+                        <div contentEditable="false" class="alert-good">
+                            Note recently saved 0 seconds ago.
+                        </div>
+                    {% endif %}
+                    {% for part in range(length) %}
+                        {% if 'Title: ' in note['content'][part] %}
+                            <h3 id="{{ part }}">{{ note['content'][part].replace('Title: ', '') }}</h3>
+                            <input name="{{ part }}-edit" type="hidden">   
+                        {% elif 'Image%%:' in note['content'][part] %}
+                            <img contentEditable="false" id="{{ part }}" src="{{ note['content'][part].replace('Image%%:', '') }}" data-src="{{ note['content'][part].replace('Image%%:', '') }}">
+                            <input name="{{ part }}-edit" type="hidden">
+                        {% else %}
+                            <p id="{{ part }}">{{ note['content'][part] }}</p>
+                            <input name="{{ part }}-edit" type="hidden">
+                        {% endif %}
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ note['title'].replace('Summary', '') }}</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+
+    <!-- Cool fonts from Google -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Font Awesome Js -->
+    <script src="https://kit.fontawesome.com/1216aee205.js" crossorigin="anonymous"></script>
+    
+    <link type="text/css" href="{{ url_for('static', filename='css/shared-note.css') }}" rel="stylesheet">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="page">
+            <div class="full-note">
+                <form method="POST">
+                    <h1>{{ note['title'] }}</h1>
+                    <h4>Made on {{ note['date_created'] }}</h4>
+                    {% if 'htt' in note['source'][0:3] %}
+                        <h4 style="color: black;">Source: <a href="{{ note['source'] }}" target="_blank">{{ note['source'] }}</a></h4>
+                    {% else %}
+                        <h4 style="color: black;">Source: {{ note['source'].replace(note['source'][25:l - 1], '...') }}</h4>
+                    {% endif %}
+                    <hr style="margin-top: 15px;">
+                    {% for part in range(length) %}
+                        {% if 'Title: ' in note['content'][part] %}
+                            <h3>{{ note['content'][part].replace('Title: ', '') }}</h3> 
+                        {% elif 'Image%%:' in note['content'][part] %}
+                            <img contentEditable="false" src="{{ note['content'][part].replace('Image%%:', '') }}">
+                        {% else %}
+                            <p>{{ note['content'][part] }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

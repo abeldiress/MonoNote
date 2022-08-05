@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link - {{ name }}</title>
+    
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+
+    <!-- Cool fonts from Google -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Font Awesome Js -->
+    <script src="https://kit.fontawesome.com/1216aee205.js" crossorigin="anonymous"></script>
+    <link type="text/css" href="{{ url_for('static', filename='css/create-link.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    <script>
+        onload = function() {
+            setInterval(function() {
+                var val = document.getElementById('range').value;
+                if (val == 1) {
+                    document.getElementById('percent-text').innerHTML = 'Short';
+                } else if (val == 2) {
+                    document.getElementById('percent-text').innerHTML = 'Medium';
+                } else if (val == 3) {
+                    document.getElementById('percent-text').innerHTML = 'Long';
+                }
+            }, 50);
+
+            var navbar = `<div class="navbar">
+        <ul style="margin-top: 12px; width: calc(53.78px * 7);">
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i></a></li>
+            <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i></a></li>
+            <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i></a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i></a></li>
+        </ul>
+    </div>`
+            if (screen.width <= 699) {
+                document.getElementsByClassName('sidebar')[0].style.display = 'none';
+                document.getElementsByClassName('container')[0].style.width = '100%';
+                $('body').append(navbar);
+                $('form').css('width', '95%');
+                $('.cred input').css('width', 'auto');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 align="center">MN</h2>
+        <ul>
+            <li><a href="{{ url_for('dash') }}"><i class="fas fa-plus"></i><span>Create</span></a></li>
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i><span>Notes</span></a></li>
+            <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i><span>Account</span></a></li>
+            <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i><span>Billing</span></a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i><span>Logout</span></a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <form method="POST">
+            <div class="cred" id="first">
+                {% if invalidLink %}
+                    <div class="alert-danger">
+                        This link is invalid. A link must have a domain, and a TLD (ex: .com, .ca, .net).
+                    </div>
+                {% endif %}
+                <input type="text" name="link" placeholder=" " required>
+                <label>Enter link</label>
+                <span></span>
+                <br>
+                <br>
+            </div>
+            <p style="font-family: Lato, sans-serif;">Optimized for webpages with large amount of text. Short webpages with little text will not always work.</p>
+            <div class="cred">
+                <input type="text" name="topic" placeholder=" " minlength="3" maxlength="30" required>
+                <label>Topic of Note (what's it about?)</label>
+                <span></span>
+                <br>
+                <br>
+            </div>
+            <br>
+            <br>
+            <label id="percent-label">Length of Note</label>
+            <br>
+            <input autocorrect="off" style="width: 90%;" type="range" min="1" max="3" value="2" class="slider" name="percentage" id="range">
+            <br>
+            <label id="percent-text"></label>
+            <br>
+            <br>
+            <input autocorrect="off" type="submit" value="Summarize">
+        </form>
+    </div>
+</body>
+</html>

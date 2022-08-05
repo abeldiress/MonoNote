@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing - {{ name }}</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+
+    <!-- Cool fonts from Google -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Font Awesome Js -->
+    <script src="https://kit.fontawesome.com/1216aee205.js" crossorigin="anonymous"></script>
+    
+    <link type="text/css" href="{{ url_for('static', filename='css/billing.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script>
+        var t = `<div class="modal">
+        <div class="modal-content">
+            <span class="close" style="float: right;">&times;</span>
+            <h2 style="font-family: Lato, sans-serif; margin-top: 0; margin-bottom: 7%;">Cancel Subscription</h2>
+            <p style="font-family: Catamaran, sans-serif; margin-top: 0; margin-bottom: 7%;">
+                By cancelling your subscription, you are removing your credit card from this account and won't be charged. You can always re-subscribe later.
+            </p>
+            <a href="{{ url_for('cancelSubscription') }}">
+                <button id="modal-btn" class="btn">
+                    <span style="font-family: Lato, sans-serif; font-weight: 400;">Cancel</span>
+                </button>
+            </a>
+        </div>
+        </div>`;
+
+        onload = function() {
+            var navbar = `<div class="navbar">
+        <ul style="margin-top: 12px; width: calc(53.78px * 7);">
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i></a></li>
+            <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i></a></li>
+            <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i></a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i></a></li>
+        </ul>
+    </div>`
+            if (screen.width <= 699) {
+                document.getElementsByClassName('sidebar')[0].style.display = 'none';
+                document.getElementsByClassName('container')[0].style.width = '100%';
+                $('body').append(navbar)
+            }
+
+            document.getElementById('delete').onclick = function() {
+                console.log("click")
+                $('body').append(t);
+                document.getElementsByClassName('close')[0].onclick = function() {
+                    $('.modal').remove();
+                }
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == document.getElementsByClassName('modal')[0]) {
+                    $('.modal').remove();
+                }
+            }
+
+            $('.sidebar').hover(
+                function() {
+                    $('.modal').remove();
+                }
+            );
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 align="center">MN</h2>
+        <ul>
+            <li><a href="{{ url_for('dash') }}"><i class="fas fa-plus"></i><span>Create</span></a></li>
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i><span>Notes</span></a></li>
+            <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i><span>Account</span></a></li>
+            <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i><span>Billing</span></a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i><span>Logout</span></a></li>
+        </ul>
+    </div>
+    <div class="container" style="overflow-y: auto;">
+        <h1>Billing</h1>
+        {% if user_info['plan'] == 'paid' and user_info['stripeId'] != 'override' %}
+            <div class="info">
+                <h2>Customer Billing Info</h2>
+                <hr align="left" style="width: 90%;">
+                <h3 style="color: rgb(19, 133, 8)">Balance: ${{ customer['balance'] }}</h3>
+                <h3 style="color: rgb(212, 133, 14);">Email Provided: {{ customer['email'] }}</h3>
+                {% if customer['currency'] == 'cad' %}
+                    <h3>Currency: <i class="fab fa-canadian-maple-leaf" style="color: #e74a3b; font-family: 25px;"></i></h3>
+                {% else %}
+                    <h3>Currency: {{ customer['currency'] }}</h3>
+                {% endif %}
+                <h3>Invoice Prefix: {{ customer['invoice_prefix'] }}</h3>   
+            </div>
+            <div class="info">
+                <h2>Subscription</h2>
+                <hr align="left" style="width: 90%;">
+                <h3>Subscription Type: {{ subscription['collection_method'] }}</h3>
+                <h3>Amount: {{ subscription['plan']['amount']/100 }}</h3>
+                <h3>Subscription Interval: {{ subscription['plan']['interval'] }}</h3>
+                <h3 style="font-size: 27px!important; margin-top: 0px; color:rgb(9, 25, 117);">
+                    {% if customer['sources']['data'][0]['brand'] == 'Visa' %}
+                        <i class="fab fa-cc-visa" style="font-size: 27px;"></i>
+                    {% elif customer['sources']['data'][0]['brand'] == 'American Express' %}
+                        <i class="fab fa-cc-amex" style="font-size: 27px;"></i>
+                    {% elif customer['sources']['data'][0]['brand'] == 'Diners Club' %}
+                        <i class="fab fa-cc-diners-club" style="font-size: 27px;"></i>
+                    {% elif customer['sources']['data'][0]['brand'] == 'Discover' %}
+                        <i class="fab fa-cc-discover" style="font-size: 27px;"></i>
+                    {% elif customer['sources']['data'][0]['brand'] == 'JCB' %}
+                        <i class="fab fa-cc-jcb" style="font-size: 27px;"></i>
+                    {% elif customer['sources']['data'][0]['brand'] == 'MasterCard' %}
+                        <i class="fab fa-cc-mastercard" style="font-size: 27px;"></i>
+                    {% else %}
+                        <i class="fas fa-credit-card" style="font-size: 27px;"></i>
+                    {% endif %}
+
+                    {{ customer['sources']['data'][0]['brand'] }} <span style="color: rgb(88, 88, 88); padding-left: 25px; padding-right: 25px;">**** **** **** {{ customer['sources']['data'][0]['last4'] }}</span> Exp: {{ customer['sources']['data'][0]['exp_month'] }}/{{ customer['sources']['data'][0]['exp_year'] - 2000 }}
+                </h3>
+                <button id="delete" class="btn">
+                    <span style="font-family: Lato, sans-serif; font-weight: 400;">Cancel Subscription</span>
+                </button>
+            </div>
+        {% else %}
+            <div class="info">
+                <h2 style="color:#e74a3b;">Reminder</h2>
+                <hr align="left" style="width: 90%;">
+                <p><i>You currently on the free plan, click the button below to gain unlimited access for just $2.00/month!</i></p>      
+            </div>
+        {% endif %}
+        <div class="info">
+            <h2>Subscription</h2>
+            <hr align="left" style="width: 90%;">      
+        </div>
+        <a href="{{ url_for('subscribe') }}">
+            <button class="btn" style="padding: 10px; margin-left: 51px; margin-top: 15px; cursor:pointer; color: black; border: solid #c0c0c0; border-radius: 5px; border-width: 2px; outline: 0;">
+                <i class="fas fa-shopping-bag"><span style="font-family: Lato, sans-serif; font-weight: 400; padding-left: 6px;">Buy Subscription!</span></i>
+            </button>
+        </a>
+    </div>
+</body>
+</html>

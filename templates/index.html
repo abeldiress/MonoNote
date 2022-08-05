@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Create simple and quality notes in just two clicks! Use this education tool to propel your research forward. Try for free today.">
+  <meta name="author" content="A. Diress & A. Tang">
+
+  <title>{{ name }} - Create Compelling Notes</title>
+
+  <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+  <link href="{{ url_for('static', filename='index-page/css/custom.css') }}" rel="stylesheet">
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='index-page/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='index-page/css/one-page-wonder.min.css') }}" rel="stylesheet">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-167105091-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-167105091-1');
+  </script>
+
+  <script data-ad-client="ca-pub-5286379232885198" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script data-ad-client="pub-5286379232885198" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window,document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '553661745541465'); 
+    fbq('track', 'PageView');
+    </script>
+    <noscript>
+    <img height="1" width="1" 
+    src="https://www.facebook.com/tr?id=553661745541465&ev=PageView
+    &noscript=1"/>
+   </noscript>
+  <!-- End Facebook Pixel Code -->
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{{ url_for('signup') }}">Create Summary Notes</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('login') }}">Log In</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="masthead text-center text-white" style="background: url('{{ url_for('static', filename='index-page/img/index-bck.jpg') }}');">
+    <div class="masthead-content">
+      <div class="container">
+        <h1 class="masthead-heading mb-0">{{ name }}</h1>
+        <h2 class="masthead-subheading mb-0">Create modern notes in two clicks</h2>
+        {% if user_info %}
+          <a href="{{ url_for('verify') }}" class="btn btn-primary btn-xl rounded-pill mt-5">Login into your account as {{ user_info['name'] }}</a>
+        {% else %}
+          <a href="{{ url_for('signup') }}" class="btn btn-primary btn-xl rounded-pill mt-5">Sign up today - It's Free<br><span style="font-size: 12px; opacity: 0.7;">Actually. It's free.</span></a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2">
+          <div class="p-5">
+            <img id="learn-more-destination" class="img-fluid rounded-circle" src="{{ url_for('static', filename='index-page/img/01.png') }}" alt="a 2D picture of some schools">
+          </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <div class="p-5">
+            <h2 class="display-4">Support the Black Lives Matter Movement</h2>
+            <p>With {{ name }}, digest information about police brutality among minorities and help enact change quicker through the use of well written and articulate notes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6">
+          <div class="p-5">
+            <img class="img-fluid rounded-circle" src="{{ url_for('static', filename='index-page/img/03.png') }}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="p-5">
+            <h2 class="display-4">Similarity Matrix Based Algorithms&trade;</h2>
+            <p>{{ name }}'s deep-learning algorithms uses 2 dimensional similarity matrixes to find the most relevant information in a text. These programs also help format your notes in the best way possible, so your notes are clear, easy to read, and organized.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2">
+          <div class="p-5">
+            <img class="img-fluid rounded-circle" src="{{ url_for('static', filename='index-page/img/02.png') }}" alt="">
+          </div>
+        </div>
+        <div class="col-lg-6 order-lg-1">
+          <div class="p-5">
+            <h2 class="display-4">One note, unlimited files, full control...</h2>
+            <p>After the note is created, you can download it in a PDF, Word Docx, Google Doc or even an HTML Website. If you're not satisfied with the summarization, you can dictate how long you want the note to be, giving you full control of <b><em>your</em></b> note.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-black">
+    <div class="container">
+      <h3 class="m-0 text-center text-white large">Contact</h3>
+      <p class="m-0 text-center text-white large">Email: <a href="mailto:realmononote@gmail.com" target="_blank">realmononote@gmail.com</a></p>
+      <p class="m-0 text-center text-white large">Phone: (613)-879-3427</p>
+      <div style="margin: auto; width: 110%; height: 500px; background-color: #262935; display: flex; padding-top: 20px;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d8942.23921085839!2d-75.69779820994135!3d45.42131628945453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cce044de3189905%3A0x87ee5640a118545b!2sOttawa%20City%20Hall!5e0!3m2!1sen!2sca!4v1589064784931!5m2!1sen!2sca" width="550" height="500" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+        <form style="padding-left: 30px;" method="POST">
+          <label>Enter your email</label>
+          <br>
+          <input name="email" placeholder="Email" type="email">
+          <br>
+          <br>
+          <label>Enter your name</label>
+          <br>
+          <input name="name" placeholder="Name" type="text">
+          <br>
+          <br>
+          <label>Enter your country</label>
+          <br>
+          <input name="country" placeholder="Country" type="text">
+          <br>
+          <br>
+          <label>Subject</label>
+          <br>
+          <textarea name="message" placeholder="Write something ..."></textarea>
+          <br>
+          <br>
+          <input type="submit" value="Send">  
+        </form>
+      </div>
+      <p class="m-0 text-center text-white small" style="padding-top: 35px;"></p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='index-page/vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='index-page/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+</body>
+
+</html>

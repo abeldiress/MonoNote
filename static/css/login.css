@@ -1,0 +1,126 @@
+body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-image: linear-gradient(-140deg, #e6dada, #0985a5);
+}
+
+
+.container {
+    color: black;
+    background-color: white; 
+    width: 50%;
+    height: 100%;
+    margin: auto;
+    min-width: 340.5px;
+}
+
+.login {
+    vertical-align: center;
+    width: 299px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+form {
+    width: 100%;
+}
+
+h1 {
+    font-family: Catamaran;
+    font-weight: 800;
+    font-size: 2.5rem;
+    margin-top: 0;
+}
+
+.cred{
+    margin-top: 60px;
+}
+
+.cred input[type="password"], input[type="email"], input[type="text"] {
+    font-family: Lato, sans-serif;
+    color: black;
+    position: absolute;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: black solid 3px;
+    font-size: 1.7rem;
+    outline: none;
+}
+
+.cred label {
+    font-family: Catamaran, sans-serif;
+    position: absolute;
+    border: none;
+    transition: 0.5s;
+    font-size: 1.7rem;
+    padding-top: 2px;
+    z-index: -1;
+}
+
+.cred input[type="password"]:not(:placeholder-shown), input[type="email"]:not(:placeholder-shown), input[type="text"]:not(:placeholder-shown) {
+    border-bottom: #0985a5 solid 3px;
+}
+
+.cred input[type="password"]:not(:placeholder-shown) + label, input[type="email"]:not(:placeholder-shown) + label, input[type="password"]:not(:placeholder-shown) + label {
+    transform: translateY(-25px);
+    font-size: 1rem;
+    color: #0985a5;
+}
+
+.container input[type="submit"] {
+    margin-top: 10px;
+    padding: 20px 55px 20px 55px;
+    border: solid black;
+    background: black;
+    color: white;
+    border-radius: 35px;
+    font-family: Catamaran;
+    font-size: 15px;
+    width: 299px;
+    margin-bottom: 10px;
+    outline: 0;
+}
+
+.container input[type="submit"]:hover {
+    background-color: #0985a5;
+    border-color: #0985a5;
+}
+
+button {
+    padding: 20px 55px 20px 55px;
+    border: solid #dd4b39;
+    background: #dd4b39;
+    color: white;
+    border-radius: 35px;
+    font-family: Catamaran;
+    font-size: 15px;
+    width: 299px;
+    margin-bottom: 10px;
+    opacity: 0.85;
+}
+
+button:hover {
+    opacity: 1;
+}
+
+button i {
+    vertical-align: middle;
+    margin-bottom: 3px;
+}
+
+.alert-danger {
+    width: 80%;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: solid #f5c6cb;
+    text-align: center;
+    font-family: Lato, sans-serif;
+    padding: .75rem 1.25rem;
+    border-radius: .25rem;
+}

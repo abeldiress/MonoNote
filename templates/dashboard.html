@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create - {{ name }}</title>
+
+    <!-- Cool fonts from Google -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+    
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+
+    <!-- Font Awesome Js -->
+    <script src="https://kit.fontawesome.com/1216aee205.js" crossorigin="anonymous"></script>
+    
+    <link type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script>
+        onload = function() {
+            var navbar = `<div class="navbar">
+                <ul style="margin-top: 12px; width: calc(53.78px * 7);">
+                    <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i></a></li>
+                    <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i></a></li>
+                    <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i></a></li>
+                    <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i></a></li>
+                </ul>
+            </div>`
+            if (screen.width <= 699) {
+                document.getElementsByClassName('sidebar')[0].style.display = 'none';
+                document.getElementsByClassName('container')[0].style.width = '100%';
+                $('body').append(navbar)
+            }
+        }   
+    </script>
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window,document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '553661745541465'); 
+        fbq('track', 'PageView');
+    </script>
+    
+    <noscript>
+        <img height="1" width="1" 
+        src="https://www.facebook.com/tr?id=553661745541465&ev=PageView
+        &noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+    
+</head>
+<body>
+    <div class="sidebar">
+        <h2 align="center">MN</h2>
+        <ul>
+            <li><a href="{{ url_for('dash') }}"><i class="fas fa-plus"></i><span>Create</span></a></li>
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i><span>Notes</span></a></li>
+            <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i><span>Account</span></a></li>
+            <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i><span>Billing</span></a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i><span>Logout</span></a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <h1 align="center">Create your note</h1>
+        {% if user_info['plan'] == 'free' %}
+            {% if limit %}
+                <h1 align="center" style="font-family: Catamaran, sans-serif; font-size: 20px; color: black;">You have reached your limit on creating notes. You can either delete your current notes or subscribe to MonoNote by clicking <a href="{{ url_for('subscribe') }}">here</a>.</a></h1>
+            {% else %}
+                <div class="selections">
+                    <a href="{{ url_for('link') }}">
+                        <div id="link-demo" class="single-choice">
+                            <div class="select">
+                                <i class="fas fa-link"></i>
+                                <br>
+                                <br>
+                                <span>Article Link</span>
+                                <br>
+                                <span style="color: rgb(6, 94, 13); font-size: 17px;">Most Popular</span>
+                            </div>
+                        </div>
+                    </a>
+                    <h1 style="font-family: Catamaran, sans-serif; font-size: 20px; color: black;">To access all 4 features, subscribe to MonoNote <a href="{{ url_for('subscribe') }}">here</a>.</a></h1>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="selections">
+                <a href="{{ url_for('link') }}">
+                    <div class="single-choice">
+                        <div class="select">
+                            <i class="fas fa-link"></i>
+                            <br>
+                            <br>
+                            <span>Article Link</span>
+                            <br>
+                            <span style="color: rgb(6, 94, 13); font-size: 17px;">Most Popular</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{{ url_for('pdf') }}">
+                    <div class="single-choice">
+                        <div class="select">
+                            <i class="fas fa-file-pdf"></i>
+                            <br>
+                            <br>
+                            <span>Scanned or Digital PDF</span>
+                            <br>
+                            <span style="color: rgb(172, 27, 27); font-size: 17px;">Beta Version</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{{ url_for('docx') }}">
+                    <div class="single-choice">
+                        <div class="select">
+                            <i class="fas fa-file-word"></i>
+                            <br>
+                            <br>
+                            <span>Word Document</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="{{ url_for('plain_text') }}">
+                    <div class="single-choice">
+                        <div class="select">
+                            <i class="fas fa-align-justify"></i>
+                            <br>
+                            <br>
+                            <span>Plain Text</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - {{ name }}</title>
+
+    <link rel="icon" href="{{ url_for('static', filename='icon.ico') }}" type="image/x-icon">
+
+    <!-- Cool fonts from Google -->
+    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+
+    <!-- Font Awesome Js -->
+    <script src="https://kit.fontawesome.com/1216aee205.js" crossorigin="anonymous"></script>
+    
+    <link type="text/css" href="{{ url_for('static', filename='css/account.css') }}" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <script>
+        var t = `<div class="modal">
+        <div class="modal-content">
+            <span class="close" style="float: right;">&times;</span>
+            <h2 style="font-family: Lato, sans-serif; margin-top: 0; margin-bottom: 7%;">Delete Account</h2>
+            <p style="font-family: Catamaran, sans-serif; margin-top: 0; margin-bottom: 7%;">
+                Although we're sad you're leaving, we respect your decision. Before you leave, message us at <a href="https://www.instagram.com/realmononote" target="_blank">@realmononote</a> on Instagram and tell us why you left!
+            </p>
+            <a href="{{ url_for('deleteAccount') }}">
+                <button id="modal-btn" class="btn">
+                    <span style="font-family: Lato, sans-serif; font-weight: 400;">Delete</span>
+                </button>
+            </a>
+        </div>
+        </div>`;
+
+        onload = function() {
+            document.getElementById('delete').onclick = function() {
+                console.log("click")
+                $('body').append(t);
+                document.getElementsByClassName('close')[0].onclick = function() {
+                    $('.modal').remove();
+                }
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == document.getElementsByClassName('modal')[0]) {
+                    $('.modal').remove();
+                }
+            }
+
+            var navbar = `<div class="navbar">
+        <ul style="margin-top: 12px; width: calc(53.78px * 7);">
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i></a></li>
+            <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i></a></li>
+            <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i></a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i></a></li>
+        </ul>
+    </div>`
+            if (screen.width <= 699) {
+                document.getElementsByClassName('sidebar')[0].style.display = 'none';
+                document.getElementsByClassName('container')[0].style.width = '100%';
+                $('body').append(navbar)
+            }
+
+            $('.sidebar').hover(
+                function() {
+                    $('.modal').remove();
+                }
+            );
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <h2 align="center">MN</h2>
+        <ul>
+            <li><a href="{{ url_for('dash') }}"><i class="fas fa-plus"></i><span>Create</span></a></li>
+            <li><a href="{{ url_for('notes') }}"><i class="fas fa-pencil-alt"></i><span>Notes</span></a></li>
+            <li><a href="{{ url_for('account') }}"><i class="fas fa-user"></i><span>Account</span></a></li>
+            <li><a href="{{ url_for('billing') }}"><i class="far fa-credit-card"></i><span>Billing</span></a></li>
+            <li><a href="{{ url_for('logout') }}"><i class="fas fa-power-off"></i><span>Logout</span></a></li>
+        </ul>
+    </div>
+    <div class="container" style="overflow-y: scroll;">
+        <h1>My Account</h1>
+        <div class="info">
+            <h2>Basic Info</h2>
+            <hr align="left" style="width: 90%;">
+            <h3>Email: {{ accountInfo['users'][0]['email'] }}</h3>
+            <h3>Name: {{ user_info['name'] }}</h3>
+            <h3 style="color: rgb(19, 133, 8)">Points: {{ user_info['points'] }}</h3>
+            <h3 style="color: rgb(212, 133, 14);">Verified: {% if accountInfo['users'][0]['emailVerified'] %} Yes {% else %} No. Verify email <a href="/verify">here</a> {% endif %}</h3>
+            <a href="{{ url_for('changePwd', email=accountInfo['users'][0]['email']) }}">
+                <button class="btn" style="padding: 10px; cursor:pointer; color: black; border: solid #c0c0c0; border-radius: 5px; border-width: 2px; outline: 0;">
+                    <i class="fas fa-lock"><span style="font-family: Lato, sans-serif; font-weight: 400; padding-left: 6px;">Reset Password</span></i>
+                </button>
+            </a>           
+        </div>
+        <div class="info" style="padding-bottom: 30px;">
+            <h2>Preferences</h2>
+            <hr align="left" style="width: 90%;">
+            <form method="POST" style="font-family: Lato, sans-serif;">
+                Images in notes
+                <br>
+                <br>
+                <label class="switch">
+                    {% if user_info['include_images'] %}
+                        <input name="include-images" type="checkbox" checked>
+                    {% else %}
+                        <input name="include-images" type="checkbox">
+                    {% endif %}
+                    <span class="slider round"></span>
+                </label>
+                <br>
+                <br>
+                Links in notes
+                <br>
+                <br>
+                <label class="switch">
+                    {% if user_info['include_links'] %}
+                        <input name="include-link" type="checkbox" checked>
+                    {% else %}
+                        <input name="include-link" type="checkbox">
+                    {% endif %}
+                    <span class="slider round"></span>
+                </label>
+                <br>
+                <br>
+                <input type="submit" class="btn" value="Save Settings" style="font-family: Lato, sans-serif; font-weight: 400; padding: 10px; cursor:pointer; color: white; border: solid #3b55e7; border-radius: 5px; border-width: 2px; outline: 0; background-color: #3b55e7;">
+            </form>
+        </div>
+        <div class="info" style="padding-bottom: 30px;">
+            <h2>Secret</h2>
+            <hr align="left" style="width: 90%;">
+            <h3>User Identification: {{ accountInfo['users'][0]['localId'] }}</h3>
+            <h3>Last Refresh: {{ accountInfo['users'][0]['lastRefreshAt'] }}</h3>
+            <h3 style="color: rgb(133, 12, 8)">Authentication Method: {{ accountInfo['users'][0]['providerUserInfo'][0]['providerId'] }}</h3>
+            <h3 style="color: rgb(212, 133, 14);">Verified: {% if accountInfo['users'][0]['emailVerified'] %} Yes {% else %} No. Verify email <a href="/verify">here</a> {% endif %}</h3>
+            <button id="delete" class="btn">
+                <span style="font-family: Lato, sans-serif; font-weight: 400;">Delete Account</span>
+            </button>
+        </div>
+    </div>
+</body>
+</html>

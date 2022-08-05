@@ -1,0 +1,63 @@
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(225, 232, 236);
+}
+
+.container {
+    float: left;
+}
+
+.container {
+    float: right;
+    width: 100%;
+    height: 100%;
+    transition: width 0.15s linear;
+    background-color: rgb(225, 232, 236);
+    overflow: auto;
+}
+
+.full-note {
+    margin: 0;
+    display: inline-block;
+    padding-left: 4%;
+    padding-top: 2%;
+    outline: 0;
+    width: 80%;
+}
+
+.full-note h1 {
+    font-family: Catamaran, sans-serif;
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.full-note h3 {
+    font-family: Catamaran, sans-serif;
+    font-size: 1.3rem;
+}
+
+.full-note h4 {
+    font-family: Lato, sans-serif;
+    color: #888;
+    margin: 0;
+    padding-top: 1%;
+}
+
+.full-note p {
+    font-family: Lato, sans-serif;
+}
+
+.full-note h3:focus, .full-note p:focus {
+    outline: 0;
+}
+
+.page {
+    width: 850px;
+    margin: auto;
+    background-color: white;
+    box-shadow: 1px 1px 7px #888888;
+    margin-top: 10px;
+}
